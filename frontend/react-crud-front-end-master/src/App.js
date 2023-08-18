@@ -15,6 +15,8 @@ function App() {
   const [allData, setAllData] = useState([]);
   const [currentData, setCurrentData] = useState([]);
   const [totalItems, setTotaItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+
   const [key, setKey] = useState(null);
   //creating a list
   //when we create a list we will update the alldata and currentdata
@@ -43,15 +45,17 @@ function App() {
           alert(json.message);
         }
         setKey(Math.random());
+        getAllData();
       });
   };
   //getting the data from json api
-  const getAllData = () => {
-    fetch(`${process.env.REACT_APP_SERVER}/read`)
+  const getAllData = (page) => {
+    fetch(`${process.env.REACT_APP_SERVER}/read?page=${page}`)
       .then((response) => response.json())
       .then((json) => {
-        setTotaItems(json.data.length);
-        setAllData(json.data);
+        setTotalPages(json.totalPages);
+        setCurrentData(json.data);
+        setCurrentPage(json.page);
       });
   };
 
@@ -104,21 +108,6 @@ function App() {
     getAllData();
   }, []);
 
-  useEffect(() => {
-    console.log(allData);
-    if (allData.length > 0) {
-      const data = allData.slice(
-        (currentPage - 1) * 10,
-        (currentPage - 1) * 10 + 10
-      );
-
-      setCurrentData(data);
-
-      setTotaItems(allData.length);
-    } else {
-      setCurrentData([]);
-    }
-  }, [allData, key]);
   return (
     <GlobalContext.Provider
       value={{
@@ -129,6 +118,8 @@ function App() {
         createList,
         updateList,
         deleteList,
+        totalPages,
+        getAllData,
       }}
     >
       <div className="App">

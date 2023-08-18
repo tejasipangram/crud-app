@@ -21,7 +21,7 @@ export const create = async (req, res) => {
     //checking file extension
 
     if (
-      req.file.mimetype.split("/")[1] !== "png" ||
+      req.file.mimetype.split("/")[1] !== "png" &&
       req.file.mimetype.split("/")[1] !== "jpg"
     ) {
       return res.status(500).json({

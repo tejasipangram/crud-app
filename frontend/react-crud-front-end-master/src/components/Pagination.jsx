@@ -3,18 +3,25 @@ import Pagination from "react-bootstrap/Pagination";
 import { GlobalContext } from "../GloblaCotext";
 
 export const PaginationBasic = () => {
-  const { currentPage, setCurrentPage, setKey, totalItems } =
-    useContext(GlobalContext);
+  const {
+    currentPage,
+    setCurrentPage,
+    setKey,
+    totalItems,
+    totalPages,
+    getAllData,
+  } = useContext(GlobalContext);
   let active = currentPage;
-  const totalPages = Math.ceil(totalItems / 10);
+
   let items = [];
   const changeHandler = (number) => {
-    setCurrentPage(number);
+    getAllData(number);
     setKey(Math.random());
   };
   for (let number = 1; number <= totalPages; number++) {
     items.push(
       <Pagination.Item
+        role="button"
         onClick={() => {
           changeHandler(number);
         }}
