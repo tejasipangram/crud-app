@@ -41,6 +41,7 @@ function CreateList({ name, title = "", body = "" }) {
       setModalBody("");
       setModalTitle("");
       handleClose();
+      setFile(null);
     } else {
       alert("please provide all fields");
     }
@@ -79,6 +80,12 @@ function CreateList({ name, title = "", body = "" }) {
                 value={modalBody}
               />
             </Form.Group>
+            {file && (
+              <img
+                src={URL.createObjectURL(new Blob([file]))}
+                style={{ maxWidth: "100%" }}
+              />
+            )}
             <Form.Group controlId="formFile" className="mb-3">
               <Form.Label>Select a file</Form.Label>
               <Form.Control

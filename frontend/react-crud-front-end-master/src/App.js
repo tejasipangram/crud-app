@@ -140,6 +140,7 @@ function App() {
                   title={list.title}
                   description={list.description}
                   id={list._id}
+                  filePath={list.filePath}
                 />
               );
             })

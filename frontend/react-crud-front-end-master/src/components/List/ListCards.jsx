@@ -4,11 +4,16 @@ import EditList from "./EditList";
 import { useContext, useState } from "react";
 import { GlobalContext } from "../../GloblaCotext";
 
-function ListCard({ title, description, id }) {
+function ListCard({ title, description, id, filePath }) {
+  console.log(filePath);
   const [showMore, setShowMore] = useState(false);
   const { deleteList } = useContext(GlobalContext);
   return (
     <Card style={{ width: "25rem", marginTop: "1rem" }}>
+      <Card.Img
+        variant="top"
+        src={process.env.REACT_APP_SERVER + "/static/" + filePath}
+      />
       <Card.Body>
         <Card.Title>{title}</Card.Title>
         <Card.Text>
