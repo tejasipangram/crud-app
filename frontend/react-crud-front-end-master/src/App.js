@@ -31,14 +31,17 @@ function App() {
     })
       .then((response) => response.json())
       .then((json) => {
-        if (!allData) {
-          setAllData(json.data);
+        if (json.success) {
+          if (!allData) {
+            setAllData(json.data);
+          } else {
+            setAllData((prev) => {
+              return [json.data, ...prev];
+            });
+          }
         } else {
-          setAllData((prev) => {
-            return [json.data, ...prev];
-          });
+          alert(json.message);
         }
-
         setKey(Math.random());
       });
   };

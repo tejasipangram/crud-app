@@ -23,16 +23,8 @@ function CreateList({ name, title = "", body = "" }) {
     const selected = e.target.files[0];
 
     // Validate file type and size
-    if (
-      selected &&
-      selected.type.match("image/(jpeg|png)") &&
-      selected.size <= 5 * 1024 * 1024
-    ) {
-      setFile(selected);
-    } else {
-      setFile(null);
-      alert("Please select a valid JPG or PNG file (max 5MB).");
-    }
+
+    setFile(selected);
   };
   const saveHandler = async (e) => {
     e.preventDefault();
