@@ -49,7 +49,7 @@ function App() {
       });
   };
   //getting the data from json api
-  const getAllData = (page) => {
+  const getAllData = (page = 1) => {
     fetch(`${process.env.REACT_APP_SERVER}/read?page=${page}`)
       .then((response) => response.json())
       .then((json) => {
@@ -77,15 +77,15 @@ function App() {
 
     const data = await res.json();
 
-    const newData = allData.map((list, index) => {
+    const newData = currentData.map((list, index) => {
       if (data.data._id === list._id) {
         list.title = title;
-        list.body = body;
+        list.description = body;
       }
       return list;
     });
 
-    setAllData(newData);
+    setCurrentData(newData);
   };
 
   //deleting a list
@@ -94,14 +94,13 @@ function App() {
     await fetch(`${process.env.REACT_APP_SERVER}/delete/${id}`, {
       method: "DELETE",
     });
-    await getAllData();
-    // const newData = allData.filter((list, index) => {
-    //   console.log(list._id, id);
-    //   return list._id !== id;
-    // });
 
-    // console.log(newData);
-    // setAllData(newData);
+    const newData = currentData.filter((list, index) => {
+      console.log(list._id, id);
+      return list._id !== id;
+    });
+
+    setCurrentData(newData);
   };
 
   useEffect(() => {
