@@ -12,17 +12,38 @@ function CreateList({ name, title = "", body = "" }) {
   const colsValue = currentInnerWidth > 400 ? 35 : 25;
   const [modalTitle, setModalTitle] = React.useState("");
   const [modalBody, setModalBody] = React.useState("");
+  const [file, setFile] = useState(null);
   const onChangeTitleHandler = (e) => {
     setModalTitle(e.target.value);
   };
   const onChangeBodyeHandler = (e) => {
     setModalBody(e.target.value);
   };
-  const saveHandler = async () => {
-    await createList(modalTitle, modalBody);
-    setModalBody("");
-    setModalTitle("");
-    handleClose();
+  const onFileHandler = (e) => {
+    const selected = e.target.files[0];
+
+    // Validate file type and size
+    if (
+      selected &&
+      selected.type.match("image/(jpeg|png)") &&
+      selected.size <= 5 * 1024 * 1024
+    ) {
+      setFile(selected);
+    } else {
+      setFile(null);
+      alert("Please select a valid JPG or PNG file (max 5MB).");
+    }
+  };
+  const saveHandler = async (e) => {
+    e.preventDefault();
+    if (modalTitle && modalBody) {
+      await createList(modalTitle, modalBody, file);
+      setModalBody("");
+      setModalTitle("");
+      handleClose();
+    } else {
+      alert("please provide all fields");
+    }
   };
   return (
     <>
@@ -39,7 +60,7 @@ function CreateList({ name, title = "", body = "" }) {
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>List Title</Form.Label>
               <Form.Control
-                required
+                required={true}
                 onChange={onChangeTitleHandler}
                 type="text"
                 value={modalTitle}
@@ -51,23 +72,36 @@ function CreateList({ name, title = "", body = "" }) {
             >
               <Form.Label>Description</Form.Label>
               <Form.Control
-                required
+                required={true}
                 onChange={onChangeBodyeHandler}
                 as="textarea"
                 rows={3}
                 value={modalBody}
               />
             </Form.Group>
+            <Form.Group controlId="formFile" className="mb-3">
+              <Form.Label>Select a file</Form.Label>
+              <Form.Control
+                onChange={(e) => {
+                  onFileHandler(e);
+                }}
+                accept=".png, .jpg"
+                type="file"
+              />
+            </Form.Group>
+            <Button className="mx-2" variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button
+              className="mx-2"
+              type="submit"
+              variant="primary"
+              onClick={saveHandler}
+            >
+              Save Changes
+            </Button>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={saveHandler}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
       </Modal>
     </>
   );

@@ -19,16 +19,15 @@ function App() {
   //creating a list
   //when we create a list we will update the alldata and currentdata
 
-  const createList = (title, description) => {
+  const createList = (title, description, file) => {
+    //creating a form data
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("image", file);
     fetch(`${process.env.REACT_APP_SERVER}/create`, {
       method: "POST",
-      body: JSON.stringify({
-        title: title,
-        description: description,
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
+      body: formData,
     })
       .then((response) => response.json())
       .then((json) => {
