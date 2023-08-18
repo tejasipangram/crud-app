@@ -3,12 +3,12 @@ import { deleteList } from "../controller/delete.js";
 import { read } from "../controller/read.js";
 import { udpate } from "../controller/update.js";
 import express from "express";
-import { upload } from "../middleware/upload.js";
+import { handleMulterError, upload } from "../middleware/upload.js";
 const router = express.Router();
 
 //all the routes
 
-router.route("/create").post(upload.single("image"), create);
+router.route("/create").post(upload.single("image"), handleMulterError, create);
 router.route("/update/:id").put(udpate);
 router.route("/delete/:id").delete(deleteList);
 router.route("/read").get(read);

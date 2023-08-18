@@ -3,14 +3,17 @@ import "./App.css";
 import { GlobalContext } from "./GloblaCotext";
 import { useEffect, useState } from "react";
 
+import { InfinitySpin } from "react-loader-spinner";
 import NavbarComp from "./components/Navabar";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import ListCard from "./components/List/ListCards";
 import { PaginationBasic } from "./components/Pagination";
 import CreateList from "./components/List/Modal";
+import Spinner from "react-bootstrap/esm/Spinner";
 
 function App() {
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [allData, setAllData] = useState([]);
   const [currentData, setCurrentData] = useState([]);
@@ -23,6 +26,7 @@ function App() {
 
   const createList = (title, description, file) => {
     //creating a form data
+    setLoading(true);
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
@@ -33,6 +37,7 @@ function App() {
     })
       .then((response) => response.json())
       .then((json) => {
+        setLoading(false);
         if (json.success) {
           if (!allData) {
             setAllData(json.data);
@@ -46,61 +51,78 @@ function App() {
         }
         setKey(Math.random());
         getAllData();
-      });
+      })
+      .catch((err) => setLoading(false));
   };
   //getting the data from json api
   const getAllData = (page = 1) => {
+    setLoading(true);
     fetch(`${process.env.REACT_APP_SERVER}/read?page=${page}`)
       .then((response) => response.json())
       .then((json) => {
+        setLoading(false);
         setTotalPages(json.totalPages);
         setCurrentData(json.data);
         setCurrentPage(json.page);
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err);
       });
   };
 
   //updating the list
 
   const updateList = async (id, title, body) => {
-    const res = await fetch(`${process.env.REACT_APP_SERVER}/update/${id}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        id: id,
-        title: title,
-        body: body,
-        userId: 1,
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    });
+    try {
+      setLoading(true);
+      const res = await fetch(`${process.env.REACT_APP_SERVER}/update/${id}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          id: id,
+          title: title,
+          body: body,
+          userId: 1,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      });
 
-    const data = await res.json();
+      const data = await res.json();
+      setLoading(false);
+      const newData = currentData.map((list, index) => {
+        if (data.data._id === list._id) {
+          list.title = title;
+          list.description = body;
+        }
+        return list;
+      });
 
-    const newData = currentData.map((list, index) => {
-      if (data.data._id === list._id) {
-        list.title = title;
-        list.description = body;
-      }
-      return list;
-    });
-
-    setCurrentData(newData);
+      setCurrentData(newData);
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   //deleting a list
 
   const deleteList = async (id) => {
-    await fetch(`${process.env.REACT_APP_SERVER}/delete/${id}`, {
-      method: "DELETE",
-    });
+    try {
+      setLoading(true);
+      await fetch(`${process.env.REACT_APP_SERVER}/delete/${id}`, {
+        method: "DELETE",
+      });
+      setLoading(false);
+      const newData = currentData.filter((list, index) => {
+        console.log(list._id, id);
+        return list._id !== id;
+      });
 
-    const newData = currentData.filter((list, index) => {
-      console.log(list._id, id);
-      return list._id !== id;
-    });
-
-    setCurrentData(newData);
+      setCurrentData(newData);
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -122,6 +144,10 @@ function App() {
       }}
     >
       <div className="App">
+        <div className={`loader ${!loading ? "hide" : null}`}>
+          {loading && <InfinitySpin width="200" color="#4fa94d" />}
+        </div>
+
         <NavbarComp />
         <CreateList />
         <div className="d-flex flex-wrap gap-4 justify-content-center">

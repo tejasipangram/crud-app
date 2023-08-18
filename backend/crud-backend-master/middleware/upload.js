@@ -2,6 +2,7 @@
 import path from "path";
 import multer from "multer";
 import { fileURLToPath } from "url";
+import { error } from "console";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const storage = multer.diskStorage({
@@ -21,3 +22,35 @@ export const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 },
 });
+
+// export async function uploadImage(req, res, next) {
+//   try {
+//     console.log("here we came");
+
+//     next();
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ success: false, message: error.message });
+//     console.error(error);
+//   }
+// }
+
+export const handleMulterError = (err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    // Handle specific multer errors, such as file size limit exceeded
+    if (err.code === "LIMIT_FILE_SIZE") {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "File size exceeds the limit of 5MB",
+        });
+    }
+    // Handle other multer errors as needed
+    return res
+      .status(400)
+      .json({ success: false, message: "Multer error: " + err.message });
+  }
+  // Pass other errors to the default error handler
+  next(err);
+};

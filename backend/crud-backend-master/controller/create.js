@@ -2,9 +2,9 @@ import { List } from "../model/List.js";
 
 export const create = async (req, res) => {
   const { title, description } = req.body;
-  console.log(req.file);
+  console.log(req.file, "this is req.file");
   try {
-    if (!title && !description) {
+    if (!title || !description || !req.file) {
       return res
         .status(500)
         .json({ success: false, message: "Please provide all the fields " });
@@ -19,11 +19,11 @@ export const create = async (req, res) => {
     }
 
     //checking file extension
-
-    if (
-      req.file.mimetype.split("/")[1] !== "png" &&
-      req.file.mimetype.split("/")[1] !== "jpg"
-    ) {
+    let fileType = req.file.originalname.split(".");
+    fileType = fileType[fileType.length - 1];
+    console.log(fileType);
+    if (fileType !== "png" && fileType !== "jpg") {
+      console.log(req.file.mimetype.split("/")[1]);
       return res.status(500).json({
         success: false,
         message: "Only jpg or png files are allowed",
@@ -36,6 +36,7 @@ export const create = async (req, res) => {
     await data.save();
     res.status(201).json({ success: true, message: "List added", data });
   } catch (error) {
+    console.log(error);
     return res
       .status(500)
       .json({ success: false, message: "Something went wrong " });

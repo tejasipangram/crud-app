@@ -17,6 +17,12 @@ import bodyParser from "body-parser";
 app.use("/static", express.static(path.join(__dirname, "upload")));
 
 app.use("/", ListRoutes);
+
+// Global error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err); // Log the error for debugging
+  res.status(500).json({ error: "Internal server error" });
+});
 connectDb();
 app.listen(process.env.PORT, () => {
   console.log("server started at " + process.env.PORT);
