@@ -9,7 +9,9 @@ const router = express.Router();
 //all the routes
 
 router.route("/create").post(upload.single("image"), handleMulterError, create);
-router.route("/update/:id").put(udpate);
+router
+  .route("/update/:id")
+  .put(upload.single("image"), handleMulterError, udpate);
 router.route("/delete/:id").delete(deleteList);
 router.route("/read").get(read);
 

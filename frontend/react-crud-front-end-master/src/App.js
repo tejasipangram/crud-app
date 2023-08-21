@@ -31,6 +31,7 @@ function App() {
     formData.append("title", title);
     formData.append("description", description);
     formData.append("image", file);
+
     fetch(`${process.env.REACT_APP_SERVER}/create`, {
       method: "POST",
       body: formData,
@@ -52,7 +53,10 @@ function App() {
         setKey(Math.random());
         getAllData();
       })
-      .catch((err) => setLoading(false));
+      .catch((err) => {
+        setLoading(false);
+        getAllData();
+      });
   };
   //getting the data from json api
   const getAllData = (page = 1) => {
@@ -68,38 +72,39 @@ function App() {
       .catch((err) => {
         setLoading(false);
         console.log(err);
+        setCurrentData([]);
       });
   };
 
   //updating the list
 
-  const updateList = async (id, title, body) => {
+  const updateList = async (id, title, description, file) => {
     try {
       setLoading(true);
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("image", file);
+
       const res = await fetch(`${process.env.REACT_APP_SERVER}/update/${id}`, {
         method: "PUT",
-        body: JSON.stringify({
-          id: id,
-          title: title,
-          body: body,
-          userId: 1,
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
+        body: formData,
       });
 
       const data = await res.json();
-      setLoading(false);
+      console.log(currentData);
+
       const newData = currentData.map((list, index) => {
         if (data.data._id === list._id) {
           list.title = title;
-          list.description = body;
+          list.description = description;
+          list.filePath = data.data.filePath;
         }
         return list;
       });
-
+      console.log(newData);
       setCurrentData(newData);
+      setLoading(false);
     } catch (error) {
       setLoading(false);
     }
@@ -115,7 +120,6 @@ function App() {
       });
       setLoading(false);
       const newData = currentData.filter((list, index) => {
-        console.log(list._id, id);
         return list._id !== id;
       });
 

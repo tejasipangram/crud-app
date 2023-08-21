@@ -3,11 +3,11 @@ import Card from "react-bootstrap/Card";
 import EditList from "./EditList";
 import { useContext, useState } from "react";
 import { GlobalContext } from "../../GloblaCotext";
-import Spinner from "react-bootstrap/Spinner";
+
 function ListCard({ title, description, id, filePath }) {
-  console.log(filePath);
   const [showMore, setShowMore] = useState(false);
   const { deleteList } = useContext(GlobalContext);
+  console.log(filePath, "updated ");
   return (
     <Card style={{ width: "25rem", marginTop: "1rem" }}>
       <Card.Img
@@ -46,7 +46,13 @@ function ListCard({ title, description, id, filePath }) {
             </div>
           )}
         </Card.Text>
-        <EditList id={id} title={title} description={description} name="EDIT" />
+        <EditList
+          id={id}
+          title={title}
+          description={description}
+          filePath={filePath}
+          name="EDIT"
+        />
 
         <Button
           onClick={() => {

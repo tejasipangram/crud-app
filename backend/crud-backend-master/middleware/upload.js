@@ -13,8 +13,10 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     const fileExtension = file.mimetype.split("/")[1];
-    cb(null, file.fieldname + "-" + uniqueSuffix + "." + fileExtension);
-    const filename = file.fieldname + "-" + uniqueSuffix + "." + fileExtension;
+    cb(null, file.originalname + "-" + uniqueSuffix + "." + fileExtension);
+
+    const filename =
+      file.originalname + "-" + uniqueSuffix + "." + fileExtension;
     req.fileName = filename;
   },
 });
@@ -39,12 +41,10 @@ export const handleMulterError = (err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     // Handle specific multer errors, such as file size limit exceeded
     if (err.code === "LIMIT_FILE_SIZE") {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "File size exceeds the limit of 5MB",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "File size exceeds the limit of 5MB",
+      });
     }
     // Handle other multer errors as needed
     return res
