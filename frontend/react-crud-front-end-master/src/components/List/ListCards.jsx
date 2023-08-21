@@ -7,7 +7,7 @@ import { GlobalContext } from "../../GloblaCotext";
 function ListCard({ title, description, id, filePath }) {
   const [showMore, setShowMore] = useState(false);
   const { deleteList } = useContext(GlobalContext);
-  console.log(filePath, "updated ");
+
   return (
     <Card style={{ width: "25rem", marginTop: "1rem" }}>
       <Card.Img

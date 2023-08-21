@@ -11,6 +11,7 @@ import ListCard from "./components/List/ListCards";
 import { PaginationBasic } from "./components/Pagination";
 import CreateList from "./components/List/Modal";
 import Spinner from "react-bootstrap/esm/Spinner";
+import { PaginatedItems } from "./components/Rpagination";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -92,7 +93,6 @@ function App() {
       });
 
       const data = await res.json();
-      console.log(currentData);
 
       const newData = currentData.map((list, index) => {
         if (data.data._id === list._id) {
@@ -102,7 +102,7 @@ function App() {
         }
         return list;
       });
-      console.log(newData);
+
       setCurrentData(newData);
       setLoading(false);
       setKey(Math.random());
@@ -152,7 +152,6 @@ function App() {
         <div className={`loader ${!loading ? "hide" : null}`}>
           {loading && <InfinitySpin width="200" color="#4fa94d" />}
         </div>
-
         <NavbarComp />
         <CreateList />
         <div className="d-flex flex-wrap gap-4 justify-content-center">
@@ -172,7 +171,7 @@ function App() {
             <div>No data found</div>
           )}
         </div>
-        <PaginationBasic />
+        <PaginatedItems items={currentData} />,
       </div>
     </GlobalContext.Provider>
   );

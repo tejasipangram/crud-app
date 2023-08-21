@@ -44,9 +44,7 @@ function EditList({ id, title, description, filePath }) {
     setFile({ updated: selected });
   };
 
-  useEffect(() => {
-    console.log(title, description);
-  }, [title, description, file]);
+  useEffect(() => {}, [title, description, file]);
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
