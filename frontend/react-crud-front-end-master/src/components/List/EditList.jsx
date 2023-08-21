@@ -3,12 +3,12 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import { GlobalContext } from "../../GloblaCotext";
-function EditList({ id, name, title, description, filePath }) {
+function EditList({ id, title, description, filePath }) {
   const [show, setShow] = useState(false);
   const { updateList, setKey } = React.useContext(GlobalContext);
   const handleClose = () => {
     setShow(false);
-    setFile({ original: filePath });
+    // setFile({ original: filePath });
   };
   const handleShow = () => setShow(true);
   const currentInnerWidth = window.innerWidth;
@@ -27,11 +27,10 @@ function EditList({ id, name, title, description, filePath }) {
   const saveHandler = async () => {
     if (modalTitle && modalBody) {
       await updateList(id, modalTitle, modalBody, file.updated);
-      setModalBody("");
-      setModalTitle("");
+
       setFile({ original: filePath });
       handleClose();
-      setFile(null);
+
       setKey(Math.random());
     } else {
       alert("please provide all fields");
@@ -44,6 +43,10 @@ function EditList({ id, name, title, description, filePath }) {
 
     setFile({ updated: selected });
   };
+
+  useEffect(() => {
+    console.log(title, description);
+  }, [title, description, file]);
   return (
     <>
       <Button variant="primary" onClick={handleShow}>

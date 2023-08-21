@@ -105,6 +105,7 @@ function App() {
       console.log(newData);
       setCurrentData(newData);
       setLoading(false);
+      setKey(Math.random());
     } catch (error) {
       setLoading(false);
     }

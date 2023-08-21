@@ -4,7 +4,7 @@ export const udpate = async (req, res) => {
   try {
     const id = req.params.id;
     const { title, description } = req.body;
-
+    const updateData = { title, description };
     if (req.file) {
       //checking file size
       if (req.file.size > 5 * 1024 * 1024) {
@@ -26,28 +26,11 @@ export const udpate = async (req, res) => {
       }
 
       const filePath = req.fileName;
+      updateData.filePath = filePath;
     }
-    let data;
-    if (req.file) {
-      data = await List.findByIdAndUpdate(
-        id,
-        {
-          title,
-          description,
-          filePath,
-        },
-        { new: true }
-      );
-    } else {
-      data = await List.findByIdAndUpdate(
-        id,
-        {
-          title,
-          description,
-        },
-        { new: true }
-      );
-    }
+
+    const data = await List.findByIdAndUpdate(id, updateData, { new: true });
+
     await data.save();
 
     return res
