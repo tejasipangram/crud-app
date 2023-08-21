@@ -13,6 +13,7 @@ app.use(cors({ origin: process.env.ORIGIN }));
 app.use(bodyParser.json());
 import ListRoutes from "./routes/operation.js";
 import bodyParser from "body-parser";
+import { createUploadDirectory } from "./utility/createDir.js";
 
 app.use("/static", express.static(path.join(__dirname, "upload")));
 
@@ -24,6 +25,10 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "Internal server error" });
 });
 connectDb();
+
+//creating a uplod dir
+
+createUploadDirectory();
 app.listen(process.env.PORT, () => {
   console.log("server started at " + process.env.PORT);
 });
