@@ -11,12 +11,10 @@ export function PaginatedItems({ itemsPerPage, items }) {
   let active = currentPage;
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
-  const [itemOffset, setItemOffset] = useState(currentPage);
 
   // Simulate fetching items from another resources.
   // (This could be items from props; or items loaded in a local state
   // from an API endpoint with useEffect and useState)
-  const endOffset = itemOffset + itemsPerPage;
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
@@ -25,6 +23,7 @@ export function PaginatedItems({ itemsPerPage, items }) {
   return (
     <>
       <ReactPaginate
+        forcePage={currentPage - 1}
         breakLabel="..."
         nextLabel="next >"
         onPageChange={handlePageClick}
