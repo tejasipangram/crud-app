@@ -12,8 +12,11 @@ import { PaginationBasic } from "./components/Pagination";
 import CreateList from "./components/List/Modal";
 import Spinner from "react-bootstrap/esm/Spinner";
 import { PaginatedItems } from "./components/Rpagination";
+import { ShowPagesButton } from "./components/buttons/SelectData";
+import PaginationOutlined from "./components/MuiPagination";
 
 function App() {
+  const [pageSize, setPageSize] = useState(10);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [allData, setAllData] = useState([]);
@@ -62,7 +65,9 @@ function App() {
   //getting the data from json api
   const getAllData = (page = 1) => {
     setLoading(true);
-    fetch(`${process.env.REACT_APP_SERVER}/read?page=${page}`)
+    fetch(
+      `${process.env.REACT_APP_SERVER}/read?page=${page}&pageSize=${pageSize}`
+    )
       .then((response) => response.json())
       .then((json) => {
         setLoading(false);
@@ -146,6 +151,8 @@ function App() {
         deleteList,
         totalPages,
         getAllData,
+        pageSize,
+        setPageSize,
       }}
     >
       <div className="App">
@@ -171,7 +178,9 @@ function App() {
             <div>No data found</div>
           )}
         </div>
-        <PaginatedItems items={currentData} />,
+        <ShowPagesButton />
+        {/* <PaginatedItems items={currentData} /> */}
+        <PaginationOutlined />
       </div>
     </GlobalContext.Provider>
   );
