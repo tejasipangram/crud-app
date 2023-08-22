@@ -5,9 +5,9 @@ import { GlobalContext } from "../GloblaCotext";
 export const PaginationBasic = () => {
   const {
     currentPage,
-    setCurrentPage,
+
     setKey,
-    totalItems,
+
     totalPages,
     getAllData,
   } = useContext(GlobalContext);
