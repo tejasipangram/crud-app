@@ -6,7 +6,12 @@ import { GlobalContext } from "../../GloblaCotext";
 function CreateList({ name, title = "", body = "" }) {
   const [show, setShow] = useState(false);
   const { createList } = React.useContext(GlobalContext);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setModalTitle("");
+    setModalBody("");
+    setFile(null);
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
   const currentInnerWidth = window.innerWidth;
   const colsValue = currentInnerWidth > 400 ? 35 : 25;

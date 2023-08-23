@@ -64,6 +64,7 @@ function App() {
   };
   //getting the data from json api
   const getAllData = (page = 1) => {
+    console.log(pageSize, "get all data");
     setLoading(true);
     fetch(
       `${process.env.REACT_APP_SERVER}/read?page=${page}&pageSize=${pageSize}`
@@ -137,7 +138,7 @@ function App() {
 
   useEffect(() => {
     getAllData();
-  }, []);
+  }, [pageSize]);
 
   return (
     <GlobalContext.Provider
@@ -178,7 +179,7 @@ function App() {
             <div>No data found</div>
           )}
         </div>
-        <ShowPagesButton />
+        {/* <ShowPagesButton /> */}
         {/* <PaginatedItems items={currentData} /> */}
         <PaginationOutlined />
       </div>
