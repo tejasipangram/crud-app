@@ -2,20 +2,23 @@ import logo from "./logo.svg";
 import "./App.css";
 import { GlobalContext } from "./GloblaCotext";
 import { useEffect, useState } from "react";
-
+import { ToastContainer } from "react-toastify";
 import { InfinitySpin } from "react-loader-spinner";
 import NavbarComp from "./components/Navabar";
-
 import "bootstrap/dist/css/bootstrap.min.css";
-import ListCard from "./components/List/ListCards";
-import { PaginationBasic } from "./components/Pagination";
-import CreateList from "./components/List/Modal";
-import Spinner from "react-bootstrap/esm/Spinner";
-import { PaginatedItems } from "./components/Rpagination";
-import { ShowPagesButton } from "./components/buttons/SelectData";
-import PaginationOutlined from "./components/MuiPagination";
+import "react-toastify/dist/ReactToastify.css";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./Home";
+import Login from "./components/login/Login";
+import Register from "./components/register/Register";
+import Loader from "./Loader";
+import { getAccordionDetailsUtilityClass } from "@mui/material";
+import { auth } from "./firebase";
+import { signInWithCustomToken } from "firebase/auth";
 
 function App() {
+  const [userId, setUserId] = useState(null);
   const [pageSize, setPageSize] = useState(10);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,7 +39,7 @@ function App() {
     formData.append("description", description);
     formData.append("image", file);
 
-    fetch(`${process.env.REACT_APP_SERVER}/create`, {
+    fetch(`${process.env.REACT_APP_SERVER}/create/${userId}`, {
       method: "POST",
       body: formData,
     })
@@ -66,15 +69,24 @@ function App() {
   const getAllData = (page = 1) => {
     console.log(pageSize, "get all data");
     setLoading(true);
+    const encodedUserId = encodeURIComponent(userId);
     fetch(
-      `${process.env.REACT_APP_SERVER}/read?page=${page}&pageSize=${pageSize}`
+      `${process.env.REACT_APP_SERVER}/read/${encodedUserId}?page=${page}&pageSize=${pageSize}`
     )
       .then((response) => response.json())
       .then((json) => {
-        setLoading(false);
-        setTotalPages(json.totalPages);
-        setCurrentData(json.data);
-        setCurrentPage(json.page);
+        if (json.success) {
+          console.log(json);
+          setLoading(false);
+          setTotalPages(json.totalPages);
+          setCurrentData(json.data);
+          setCurrentPage(json.page);
+        } else {
+          setLoading(false);
+          setTotalPages(0);
+          setCurrentData([]);
+          setCurrentPage(1);
+        }
       })
       .catch((err) => {
         setLoading(false);
@@ -135,55 +147,79 @@ function App() {
       setLoading(false);
     }
   };
-
+  const AuthorizeUser = async () => {
+    const authToken = localStorage.getItem("authToken");
+    if (authToken) {
+      try {
+        await signInWithCustomToken(authToken);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
   useEffect(() => {
     getAllData();
-  }, [pageSize]);
+  }, [pageSize, userId]);
 
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is logged in
+        console.log("User is logged in:", user.uid);
+        setUserId(user.uid);
+      } else {
+        setUserId(null);
+        // User is logged out
+        console.log("User is logged out");
+      }
+    });
+
+    return () => unsubscribe(); // Clean up the listener when component unmounts
+  }, []);
   return (
-    <GlobalContext.Provider
-      value={{
-        setKey,
-        totalItems,
-        currentPage,
-        setCurrentPage,
-        createList,
-        updateList,
-        deleteList,
-        totalPages,
-        getAllData,
-        pageSize,
-        setPageSize,
-      }}
-    >
-      <div className="App">
-        <div className={`loader ${!loading ? "hide" : null}`}>
-          {loading && <InfinitySpin width="200" color="#4fa94d" />}
-        </div>
-        <NavbarComp />
-        <CreateList />
-        <div className="d-flex flex-wrap gap-4 justify-content-center">
-          {currentData.length > 0 ? (
-            currentData.map((list, index) => {
-              return (
-                <ListCard
-                  key={list._id}
-                  title={list.title}
-                  description={list.description}
-                  id={list._id}
-                  filePath={list.filePath}
-                />
-              );
-            })
-          ) : (
-            <div>No data found</div>
-          )}
-        </div>
-        {/* <ShowPagesButton /> */}
-        {/* <PaginatedItems items={currentData} /> */}
-        <PaginationOutlined />
-      </div>
-    </GlobalContext.Provider>
+    <BrowserRouter>
+      <GlobalContext.Provider
+        value={{
+          setKey,
+          totalItems,
+          currentPage,
+          setCurrentPage,
+          createList,
+          updateList,
+          deleteList,
+          totalPages,
+          getAllData,
+          pageSize,
+          setPageSize,
+          currentData,
+          loading,
+          setLoading,
+          userId,
+          setUserId,
+        }}
+      >
+        <NavbarComp userId={userId} />
+        <Loader loading={loading} setLoading={setLoading} />
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+        <Routes>
+          <Route path="/" element={userId ? <Home /> : <Login />} />
+
+          <Route path="/login" element={userId ? <Home /> : <Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </GlobalContext.Provider>
+    </BrowserRouter>
   );
 }
 

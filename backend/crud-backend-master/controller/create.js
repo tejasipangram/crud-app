@@ -31,8 +31,8 @@ export const create = async (req, res) => {
     }
 
     const filePath = req.fileName;
-
-    const data = new List({ title, description, filePath });
+    const UserId = req.params.userId;
+    const data = new List({ title, description, filePath, UserId });
     await data.save();
     res.status(201).json({ success: true, message: "List added", data });
   } catch (error) {

@@ -1,18 +1,42 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
 
-function NavbarComp() {
+import { Link } from "react-router-dom";
+import { auth } from "../firebase";
+import { toast } from "react-toastify";
+
+function NavbarComp({ userId }) {
+  const logout = () => {
+    auth
+      .signOut()
+      .then(() => {
+        localStorage.removeItem("authToken");
+        toast.success("Logged out successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+        // Handle logout error
+      });
+  };
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="#home">CRUD APP</Navbar.Brand>
+        <Navbar.Brand>CRUD APP</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#link">Go</Nav.Link>
+            <Link className="text-decoration-none mx-2" to={"/"}>
+              <span>Home</span>
+            </Link>
+
+            <Link className="text-decoration-none mx-2" to={"/login"}>
+              <span>Login</span>
+            </Link>
+            <Link className="text-decoration-none mx-2" to={"/register"}>
+              <span>Register</span>
+            </Link>
+            {userId && <button onClick={logout}>Log out</button>}
           </Nav>
         </Navbar.Collapse>
       </Container>

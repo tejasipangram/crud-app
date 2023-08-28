@@ -44,7 +44,7 @@ function CreateList({ name, title = "", body = "" }) {
     }
   };
   return (
-    <>
+    <div className="d-flex justify-content-center">
       <Button variant="primary" onClick={handleShow}>
         Create List
       </Button>
@@ -107,7 +107,7 @@ function CreateList({ name, title = "", body = "" }) {
           </Form>
         </Modal.Body>
       </Modal>
-    </>
+    </div>
   );
 }
 
