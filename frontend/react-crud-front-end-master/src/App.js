@@ -1,9 +1,8 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { GlobalContext } from "./GloblaCotext";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import { InfinitySpin } from "react-loader-spinner";
+
 import NavbarComp from "./components/Navabar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,7 +12,7 @@ import Home from "./Home";
 import Login from "./components/login/Login";
 import Register from "./components/register/Register";
 import Loader from "./Loader";
-import { getAccordionDetailsUtilityClass } from "@mui/material";
+
 import { auth } from "./firebase";
 import { signInWithCustomToken } from "firebase/auth";
 

@@ -1,7 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import ReactPaginate from "react-paginate";
 import { GlobalContext } from "../GloblaCotext";
-export function PaginatedItems({ itemsPerPage, items }) {
+export function PaginatedItems() {
   const {
     currentPage,
 

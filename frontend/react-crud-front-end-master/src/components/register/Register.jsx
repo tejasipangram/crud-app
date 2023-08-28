@@ -1,24 +1,25 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { auth } from "../../firebase"; // Import the initialized auth instance
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
 import { GlobalContext } from "../../GloblaCotext";
-import { useNavigate } from "react-router-dom";
 const Register = () => {
-  const { setUserId, userId } = useContext(GlobalContext);
+  const { setUserId, setLoading } = useContext(GlobalContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
 
   const signUp = async (email, password) => {
     try {
+      setLoading(true);
       const { user } = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
+      setLoading(false);
       toast.success("Registered successfully");
       console.log(user);
       setUserId(user.uid);
@@ -32,6 +33,7 @@ const Register = () => {
           console.log(error);
         });
     } catch (error) {
+      setLoading(false);
       console.log(error);
       toast.error(error.message);
     }

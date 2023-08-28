@@ -7,21 +7,24 @@ import { auth } from "../../firebase";
 import { GlobalContext } from "../../GloblaCotext";
 
 function Login() {
-  const { setUserId } = useContext(GlobalContext);
+  const { setUserId, setLoading } = useContext(GlobalContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const login = async (email, password) => {
-    const { user } = await signInWithEmailAndPassword(auth, email, password);
-    setUserId(user.uid);
-    user
-      .getIdToken()
-      .then((token) => {
-        localStorage.setItem("authToken", token);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
+    try {
+      setLoading(true);
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
+      setUserId(user.uid);
+      setLoading(false);
+      user
+        .getIdToken()
+        .then((token) => {
+          localStorage.setItem("authToken", token);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {}
     setEmail("");
     setPassword("");
   };
