@@ -68,31 +68,33 @@ function App() {
   //getting the data from json api
   const getAllData = (page = 1) => {
     console.log(pageSize, "get all data");
-    setLoading(true);
-    const encodedUserId = encodeURIComponent(userId);
-    fetch(
-      `${process.env.REACT_APP_SERVER}/read/${encodedUserId}?page=${page}&pageSize=${pageSize}`
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.success) {
-          console.log(json);
+    if (userId) {
+      setLoading(true);
+      const encodedUserId = encodeURIComponent(userId);
+      fetch(
+        `${process.env.REACT_APP_SERVER}/read/${encodedUserId}?page=${page}&pageSize=${pageSize}`
+      )
+        .then((response) => response.json())
+        .then((json) => {
+          if (json.success) {
+            console.log(json);
+            setLoading(false);
+            setTotalPages(json.totalPages);
+            setCurrentData(json.data);
+            setCurrentPage(json.page);
+          } else {
+            setLoading(false);
+            setTotalPages(0);
+            setCurrentData([]);
+            setCurrentPage(1);
+          }
+        })
+        .catch((err) => {
           setLoading(false);
-          setTotalPages(json.totalPages);
-          setCurrentData(json.data);
-          setCurrentPage(json.page);
-        } else {
-          setLoading(false);
-          setTotalPages(0);
+          console.log(err);
           setCurrentData([]);
-          setCurrentPage(1);
-        }
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log(err);
-        setCurrentData([]);
-      });
+        });
+    }
   };
 
   //updating the list
