@@ -1,10 +1,11 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { toast } from "react-toastify";
-import { auth } from "../../firebase";
+import { auth, provider } from "../../firebase";
 import { GlobalContext } from "../../GloblaCotext";
+import LoginGoogle from "../buttons/LoginGoogle";
 
 function Login() {
   const { setUserId, setLoading } = useContext(GlobalContext);
@@ -29,6 +30,16 @@ function Login() {
     setPassword("");
   };
 
+  const signInWithGoogle = async () => {
+    signInWithPopup(auth, provider)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const onSubmit = async (e) => {
     try {
       e.preventDefault();
@@ -39,7 +50,7 @@ function Login() {
     }
   };
   return (
-    <div className="container d-flex justify-content-center align-items-center">
+    <div className="container d-flex flex-column   justify-content-center align-items-center">
       <Form className="" style={{ maxWidth: "25rem" }}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
@@ -71,6 +82,7 @@ function Login() {
         <Button onClick={onSubmit} variant="primary" type="submit">
           Submit
         </Button>
+        <LoginGoogle onSubmit={signInWithGoogle} />
       </Form>
     </div>
   );
