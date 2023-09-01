@@ -36,7 +36,11 @@ function NavbarComp({ userId }) {
             <Link className="text-decoration-none mx-2" to={"/register"}>
               <span>Register</span>
             </Link>
-            {userId && <button onClick={logout}>Log out</button>}
+            {userId && (
+              <button className="btn btn-danger py-0" onClick={logout}>
+                Log out
+              </button>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

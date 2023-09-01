@@ -1,11 +1,17 @@
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import {
+  EmailAuthProvider,
+  linkWithCredential,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { toast } from "react-toastify";
-import { auth, provider } from "../../firebase";
+import { auth, gitHubProvider, provider } from "../../firebase";
 import { GlobalContext } from "../../GloblaCotext";
 import LoginGoogle from "../buttons/LoginGoogle";
+import LoginGitHub from "../buttons/LoginGitHub";
 
 function Login() {
   const { setUserId, setLoading } = useContext(GlobalContext);
@@ -34,10 +40,31 @@ function Login() {
     signInWithPopup(auth, provider)
       .then((data) => {
         console.log(data);
+        toast.success("Logged in successfully");
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const gitHubLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, gitHubProvider);
+      console.log(result);
+    } catch (error) {
+      if (error.code === "auth/account-exists-with-different-credential") {
+        // Handle the case where the user's GitHub account is associated with a different credential (e.g., email/password).
+        // You can implement the account linking logic here if needed.
+        console.log(
+          "Account exists with different credential. Handle linking."
+        );
+        toast.error("Account exists with a different credential.");
+      } else {
+        // Handle other errors
+        console.error(error);
+        toast.error("Login with GitHub failed.");
+      }
+    }
   };
 
   const onSubmit = async (e) => {
@@ -83,6 +110,7 @@ function Login() {
           Submit
         </Button>
         <LoginGoogle onSubmit={signInWithGoogle} />
+        <LoginGitHub gitHubLogin={gitHubLogin} />
       </Form>
     </div>
   );

@@ -35,13 +35,7 @@ export const create = async (req, res) => {
     const UserId = req.params.userId;
     const data = new List({ title, description, filePath, UserId });
     await data.save();
-    let mailDetails = {
-      from: "developertejas2405@gmail.com",
-      to: "tejasgiri910@gmail.com",
-      subject: "New list created",
-      text: `The user has created new list. `,
-    };
-    await sendEmail(mailDetails);
+
     res.status(201).json({ success: true, message: "List added", data });
   } catch (error) {
     console.log(error);
