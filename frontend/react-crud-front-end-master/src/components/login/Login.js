@@ -21,11 +21,17 @@ function Login() {
         .getIdToken()
         .then((token) => {
           localStorage.setItem("authToken", token);
+          toast.success("Login success");
         })
         .catch((error) => {
           console.log(error);
+          setLoading(false);
+          toast.error(error.message);
         });
-    } catch (error) {}
+    } catch (error) {
+      toast.message(error.message);
+      setLoading(false);
+    }
     setEmail("");
     setPassword("");
   };
@@ -43,8 +49,11 @@ function Login() {
   const onSubmit = async (e) => {
     try {
       e.preventDefault();
-      await login(email, password);
-      toast.success("Login success");
+      if (email === "" || password === "") {
+        toast.error("Please provide all the fields");
+      } else {
+        await login(email, password);
+      }
     } catch (error) {
       toast.error(error.message);
     }
