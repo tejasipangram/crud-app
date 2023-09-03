@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import { GlobalContext } from "../../GloblaCotext";
 function EditList({ id, title, description, filePath }) {
   const [show, setShow] = useState(false);
-  const { updateList, setKey } = React.useContext(GlobalContext);
+  const { updateList, setKey, darkMode } = React.useContext(GlobalContext);
   const handleClose = () => {
     setShow(false);
     // setFile({ original: filePath });
@@ -51,7 +51,11 @@ function EditList({ id, title, description, filePath }) {
         Update
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal
+        className={`${darkMode ? "bg-dark text-light" : "bg-light text-dark"}`}
+        show={show}
+        onHide={handleClose}
+      >
         <Modal.Header closeButton>
           <Modal.Title>Edit List</Modal.Title>
         </Modal.Header>

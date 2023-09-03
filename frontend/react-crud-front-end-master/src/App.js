@@ -7,7 +7,7 @@ import NavbarComp from "./components/Navabar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Form } from "react-router-dom";
 import Home from "./Home";
 import Login from "./components/login/Login";
 import Register from "./components/register/Register";
@@ -17,6 +17,7 @@ import { auth } from "./firebase";
 import { signInWithCustomToken } from "firebase/auth";
 
 function App() {
+  const [darkMode, setDarkMode] = useState(false);
   const [userId, setUserId] = useState(null);
   const [pageSize, setPageSize] = useState(10);
   const [loading, setLoading] = useState(false);
@@ -197,9 +198,10 @@ function App() {
           setLoading,
           userId,
           setUserId,
+          darkMode,
         }}
       >
-        <NavbarComp userId={userId} />
+        <NavbarComp userId={userId} setDarkMode={setDarkMode} />
         <Loader loading={loading} setLoading={setLoading} />
         <ToastContainer
           position="top-center"
