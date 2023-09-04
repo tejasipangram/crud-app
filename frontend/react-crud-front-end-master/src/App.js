@@ -69,9 +69,9 @@ function App() {
   //getting the data from json api
   const getAllData = (page = 1) => {
     console.log(pageSize, "get all data");
-    if (userId) {
+    if (user) {
       setLoading(true);
-      const encodedUserId = encodeURIComponent(userId);
+      const encodedUserId = encodeURIComponent(user.uid);
       fetch(
         `${process.env.REACT_APP_SERVER}/read/${encodedUserId}?page=${page}&pageSize=${pageSize}`
       )
@@ -153,7 +153,7 @@ function App() {
 
   useEffect(() => {
     getAllData();
-  }, [pageSize, userId]);
+  }, [pageSize, user]);
 
   return (
     <BrowserRouter>

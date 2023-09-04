@@ -27,6 +27,8 @@
   display: none;
 }
 
+/* google button styling  */
+
 .google-btn {
   width: 184px;
   height: 42px;
@@ -64,6 +66,8 @@
 .google-btn:active {
   background: #1669f2;
 }
+
+/* github button styling  */
 .github-btn {
   width: 184px;
   height: 42px;

@@ -11,7 +11,6 @@ function NavbarComp({ user }) {
     auth
       .signOut()
       .then(() => {
-        localStorage.removeItem("authToken");
         toast.success("Logged out successfully");
       })
       .catch((error) => {
