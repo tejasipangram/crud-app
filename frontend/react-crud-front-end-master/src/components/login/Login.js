@@ -14,20 +14,9 @@ function Login() {
   const login = async (email, password) => {
     try {
       setLoading(true);
-      const { user } = await signInWithEmailAndPassword(auth, email, password);
-      setUserId(user.uid);
+      await signInWithEmailAndPassword(auth, email, password);
+
       setLoading(false);
-      user
-        .getIdToken()
-        .then((token) => {
-          localStorage.setItem("authToken", token);
-          toast.success("Login success");
-        })
-        .catch((error) => {
-          console.log(error);
-          setLoading(false);
-          toast.error(error.message);
-        });
     } catch (error) {
       toast.message(error.message);
       setLoading(false);

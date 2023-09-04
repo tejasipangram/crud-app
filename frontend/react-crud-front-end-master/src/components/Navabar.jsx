@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { auth } from "../firebase";
 import { toast } from "react-toastify";
 
-function NavbarComp({ userId }) {
+function NavbarComp({ user }) {
   const logout = () => {
     auth
       .signOut()
@@ -36,7 +36,7 @@ function NavbarComp({ userId }) {
             <Link className="text-decoration-none mx-2" to={"/register"}>
               <span>Register</span>
             </Link>
-            {userId && <button onClick={logout}>Log out</button>}
+            {user && <button onClick={logout}>Log out</button>}
           </Nav>
         </Navbar.Collapse>
       </Container>
