@@ -20,18 +20,13 @@ function Login() {
   const login = async (email, password) => {
     try {
       setLoading(true);
-      const { user } = await signInWithEmailAndPassword(auth, email, password);
-      setUserId(user.uid);
+      await signInWithEmailAndPassword(auth, email, password);
+
       setLoading(false);
-      user
-        .getIdToken()
-        .then((token) => {
-          localStorage.setItem("authToken", token);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } catch (error) {}
+    } catch (error) {
+      toast.message(error.message);
+      setLoading(false);
+    }
     setEmail("");
     setPassword("");
   };
@@ -70,8 +65,11 @@ function Login() {
   const onSubmit = async (e) => {
     try {
       e.preventDefault();
-      await login(email, password);
-      toast.success("Login success");
+      if (email === "" || password === "") {
+        toast.error("Please provide all the fields");
+      } else {
+        await login(email, password);
+      }
     } catch (error) {
       toast.error(error.message);
     }

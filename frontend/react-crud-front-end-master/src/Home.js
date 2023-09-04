@@ -5,7 +5,7 @@ import { GlobalContext } from "./GloblaCotext";
 import PaginationOutlined from "./components/MuiPagination";
 
 const Home = () => {
-  const { pageSize, currentData, setPageSize, getAllData } =
+  const { pageSize, currentData, setPageSize, getAllData, user } =
     useContext(GlobalContext);
   console.log(currentData);
 
