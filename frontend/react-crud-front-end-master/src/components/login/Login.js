@@ -1,14 +1,19 @@
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import {
+  EmailAuthProvider,
+  linkWithCredential,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
+import { AiFillGithub } from "react-icons/ai";
 import { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { toast } from "react-toastify";
-import { FaceBookProvider, auth, provider } from "../../firebase";
+import { auth, gitHubProvider, provider } from "../../firebase";
 import { GlobalContext } from "../../GloblaCotext";
 import LoginGoogle from "../buttons/LoginGoogle";
-import LoginWithFaceBook from "../buttons/LoginWithFaceBook";
+import LoginGitHub from "../buttons/LoginGitHub";
 import { Link } from "react-router-dom";
-
 function Login() {
   const { setUserId, setLoading } = useContext(GlobalContext);
   const [email, setEmail] = useState("");
@@ -16,20 +21,9 @@ function Login() {
   const login = async (email, password) => {
     try {
       setLoading(true);
-      const { user } = await signInWithEmailAndPassword(auth, email, password);
-      setUserId(user.uid);
+      await signInWithEmailAndPassword(auth, email, password);
+
       setLoading(false);
-      user
-        .getIdToken()
-        .then((token) => {
-          localStorage.setItem("authToken", token);
-          toast.success("Login success");
-        })
-        .catch((error) => {
-          console.log(error);
-          setLoading(false);
-          toast.error(error.message);
-        });
     } catch (error) {
       toast.message(error.message);
       setLoading(false);
@@ -42,20 +36,33 @@ function Login() {
     signInWithPopup(auth, provider)
       .then((data) => {
         console.log(data);
+        toast.success("Logged in successfully");
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  const signInWithFaceBook = async () => {
-    signInWithPopup(auth, FaceBookProvider)
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+  const gitHubLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, gitHubProvider);
+      console.log(result);
+    } catch (error) {
+      if (error.code === "auth/account-exists-with-different-credential") {
+        // Handle the case where the user's GitHub account is associated with a different credential (e.g., email/password).
+        // You can implement the account linking logic here if needed.
+        console.log(
+          "Account exists with different credential. Handle linking."
+        );
+        toast.error("Account exists with a different credential.");
+      } else {
+        // Handle other errors
+        console.error(error);
+        toast.error("Login with GitHub failed.");
+      }
+    }
   };
+
   const onSubmit = async (e) => {
     try {
       e.preventDefault();
@@ -103,7 +110,7 @@ function Login() {
         </Button>
         <Link to={"/auth/resetpassword"}>Forgot password?</Link>
         <LoginGoogle onSubmit={signInWithGoogle} />
-        <LoginWithFaceBook onSubmit={signInWithFaceBook} />
+        <LoginGitHub gitHubLogin={gitHubLogin} />
       </Form>
     </div>
   );

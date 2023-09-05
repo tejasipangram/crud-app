@@ -27,6 +27,8 @@
   display: none;
 }
 
+/* google button styling  */
+
 .google-btn {
   width: 184px;
   height: 42px;
@@ -63,4 +65,17 @@
 }
 .google-btn:active {
   background: #1669f2;
+}
+
+/* github button styling  */
+.github-btn {
+  width: 184px;
+  height: 42px;
+  background-color: #020c1c;
+  border-radius: 2px;
+  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

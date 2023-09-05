@@ -2,7 +2,7 @@ import "./App.css";
 import { GlobalContext } from "./GloblaCotext";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
-
+import { useAuthState } from "react-firebase-hooks/auth";
 import NavbarComp from "./components/Navabar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,6 +18,8 @@ import { signInWithCustomToken } from "firebase/auth";
 import Resetpassword from "./components/resetpassword/Resetpassword";
 
 function App() {
+  const [user, load] = useAuthState(auth);
+
   const [userId, setUserId] = useState(null);
   const [pageSize, setPageSize] = useState(10);
   const [loading, setLoading] = useState(false);
@@ -39,7 +41,7 @@ function App() {
     formData.append("description", description);
     formData.append("image", file);
 
-    fetch(`${process.env.REACT_APP_SERVER}/create/${userId}`, {
+    fetch(`${process.env.REACT_APP_SERVER}/create/${user.uid}`, {
       method: "POST",
       body: formData,
     })
@@ -68,9 +70,9 @@ function App() {
   //getting the data from json api
   const getAllData = (page = 1) => {
     console.log(pageSize, "get all data");
-    if (userId) {
+    if (user) {
       setLoading(true);
-      const encodedUserId = encodeURIComponent(userId);
+      const encodedUserId = encodeURIComponent(user.uid);
       fetch(
         `${process.env.REACT_APP_SERVER}/read/${encodedUserId}?page=${page}&pageSize=${pageSize}`
       )
@@ -149,35 +151,11 @@ function App() {
       setLoading(false);
     }
   };
-  const AuthorizeUser = async () => {
-    const authToken = localStorage.getItem("authToken");
-    if (authToken) {
-      try {
-        await signInWithCustomToken(authToken);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
+
   useEffect(() => {
     getAllData();
-  }, [pageSize, userId]);
+  }, [pageSize, user]);
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        // User is logged in
-        console.log("User is logged in:", user.uid);
-        setUserId(user.uid);
-      } else {
-        setUserId(null);
-        // User is logged out
-        console.log("User is logged out");
-      }
-    });
-
-    return () => unsubscribe(); // Clean up the listener when component unmounts
-  }, []);
   return (
     <BrowserRouter>
       <GlobalContext.Provider
@@ -198,9 +176,11 @@ function App() {
           setLoading,
           userId,
           setUserId,
+          user,
+          load,
         }}
       >
-        <NavbarComp userId={userId} />
+        <NavbarComp user={user} />
         <Loader loading={loading} setLoading={setLoading} />
         <ToastContainer
           position="top-center"
@@ -215,9 +195,9 @@ function App() {
           theme="light"
         />
         <Routes>
-          <Route path="/" element={userId ? <Home /> : <Login />} />
+          <Route path="/" element={user ? <Home /> : <Login />} />
 
-          <Route path="/login" element={userId ? <Home /> : <Login />} />
+          <Route path="/login" element={user ? <Home /> : <Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/auth/resetpassword" element={<Resetpassword />} />
         </Routes>
