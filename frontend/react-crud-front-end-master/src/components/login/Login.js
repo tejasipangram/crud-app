@@ -3,9 +3,11 @@ import { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { toast } from "react-toastify";
-import { auth, provider } from "../../firebase";
+import { FaceBookProvider, auth, provider } from "../../firebase";
 import { GlobalContext } from "../../GloblaCotext";
 import LoginGoogle from "../buttons/LoginGoogle";
+import LoginWithFaceBook from "../buttons/LoginWithFaceBook";
+import { Link } from "react-router-dom";
 
 function Login() {
   const { setUserId, setLoading } = useContext(GlobalContext);
@@ -45,7 +47,15 @@ function Login() {
         console.log(err);
       });
   };
-
+  const signInWithFaceBook = async () => {
+    signInWithPopup(auth, FaceBookProvider)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const onSubmit = async (e) => {
     try {
       e.preventDefault();
@@ -91,7 +101,9 @@ function Login() {
         <Button onClick={onSubmit} variant="primary" type="submit">
           Submit
         </Button>
+        <Link to={"/auth/resetpassword"}>Forgot password?</Link>
         <LoginGoogle onSubmit={signInWithGoogle} />
+        <LoginWithFaceBook onSubmit={signInWithFaceBook} />
       </Form>
     </div>
   );

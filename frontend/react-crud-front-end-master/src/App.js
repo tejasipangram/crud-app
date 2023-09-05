@@ -15,6 +15,7 @@ import Loader from "./Loader";
 
 import { auth } from "./firebase";
 import { signInWithCustomToken } from "firebase/auth";
+import Resetpassword from "./components/resetpassword/Resetpassword";
 
 function App() {
   const [userId, setUserId] = useState(null);
@@ -218,6 +219,7 @@ function App() {
 
           <Route path="/login" element={userId ? <Home /> : <Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/auth/resetpassword" element={<Resetpassword />} />
         </Routes>
       </GlobalContext.Provider>
     </BrowserRouter>
