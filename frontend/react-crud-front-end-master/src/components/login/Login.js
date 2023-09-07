@@ -28,21 +28,27 @@ function Login() {
   };
 
   const signInWithGoogle = async () => {
+    setLoading(true);
     signInWithPopup(auth, provider)
       .then((data) => {
         console.log(data);
         toast.success("Logged in successfully");
+        setLoading(false);
       })
       .catch((err) => {
+        setLoading(false);
         console.log(err);
       });
   };
 
   const gitHubLogin = async () => {
     try {
+      setLoading(true);
       const result = await signInWithPopup(auth, gitHubProvider);
       console.log(result);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       if (error.code === "auth/account-exists-with-different-credential") {
         // Handle the case where the user's GitHub account is associated with a different credential (e.g., email/password).
         // You can implement the account linking logic here if needed.
@@ -113,6 +119,7 @@ function Login() {
           <Link className="mx-2" to={"/auth/resetpassword"}>
             Forgot password?
           </Link>
+
           <LoginGoogle onSubmit={signInWithGoogle} />
           <LoginGitHub gitHubLogin={gitHubLogin} />
         </Form>
