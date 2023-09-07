@@ -1,10 +1,5 @@
-import {
-  EmailAuthProvider,
-  linkWithCredential,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-} from "firebase/auth";
-import { AiFillGithub } from "react-icons/ai";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+
 import { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -25,7 +20,7 @@ function Login() {
 
       setLoading(false);
     } catch (error) {
-      toast.message(error.message);
+      toast.error(error.message);
       setLoading(false);
     }
     setEmail("");
@@ -108,7 +103,9 @@ function Login() {
         <Button onClick={onSubmit} variant="primary" type="submit">
           Submit
         </Button>
-        <Link to={"/auth/resetpassword"}>Forgot password?</Link>
+        <Link className="mx-2" to={"/auth/resetpassword"}>
+          Forgot password?
+        </Link>
         <LoginGoogle onSubmit={signInWithGoogle} />
         <LoginGitHub gitHubLogin={gitHubLogin} />
       </Form>

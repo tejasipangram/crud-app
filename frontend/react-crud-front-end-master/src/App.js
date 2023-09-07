@@ -199,7 +199,10 @@ function App() {
 
           <Route path="/login" element={user ? <Home /> : <Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/auth/resetpassword" element={<Resetpassword />} />
+          <Route
+            path="/auth/resetpassword"
+            element={user ? <Home /> : <Resetpassword />}
+          />
         </Routes>
       </GlobalContext.Provider>
     </BrowserRouter>
