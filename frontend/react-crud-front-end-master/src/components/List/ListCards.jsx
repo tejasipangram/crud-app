@@ -6,10 +6,13 @@ import { GlobalContext } from "../../GloblaCotext";
 
 function ListCard({ title, description, id, filePath }) {
   const [showMore, setShowMore] = useState(false);
-  const { deleteList } = useContext(GlobalContext);
+  const { deleteList, darkMode } = useContext(GlobalContext);
 
   return (
-    <Card style={{ width: "25rem", marginTop: "1rem" }}>
+    <Card
+      className={`${darkMode ? "bg-dark text-light" : "bg-light text-dark"}`}
+      style={{ width: "25rem", marginTop: "1rem" }}
+    >
       <Card.Img
         style={{ maxWidth: "100%", maxHeight: "200px" }}
         variant="top"

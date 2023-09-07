@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import { GlobalContext } from "../../GloblaCotext";
 function CreateList({ name, title = "", body = "" }) {
   const [show, setShow] = useState(false);
-  const { createList } = React.useContext(GlobalContext);
+  const { createList, darkMode } = React.useContext(GlobalContext);
   const handleClose = () => {
     setModalTitle("");
     setModalBody("");
@@ -49,12 +49,22 @@ function CreateList({ name, title = "", body = "" }) {
         Create List
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Create List</Modal.Title>
+      <Modal
+        className={`${darkMode ? "bg-dark text-light" : "bg-light text-dark"}`}
+        show={show}
+        onHide={handleClose}
+        dialogClassName="dark-modal"
+      >
+        <Modal.Header
+          className={darkMode ? "dark-modal" : "light-modal"}
+          closeButton
+        >
+          <Modal.Title className={darkMode ? "dark-modal" : "light-modal"}>
+            Create List
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <Form>
+        <Modal.Body className={darkMode ? "dark-modal" : "light-modal"}>
+          <Form className={darkMode ? "dark-modal" : "light-modal"}>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>List Title</Form.Label>
               <Form.Control

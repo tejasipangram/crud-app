@@ -3,7 +3,7 @@ import TablePagination from "@mui/material/TablePagination";
 import { GlobalContext } from "../GloblaCotext";
 
 export default function TablePaginationDemo() {
-  const { currentPage, totalPages, getAllData, setPageSize } =
+  const { currentPage, totalPages, getAllData, setPageSize, darkMode } =
     useContext(GlobalContext);
 
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -20,6 +20,7 @@ export default function TablePaginationDemo() {
 
   return (
     <TablePagination
+      className={`${darkMode ? " text-light" : "text-dark"}`}
       component="div"
       count={totalPages * rowsPerPage}
       page={currentPage - 1}

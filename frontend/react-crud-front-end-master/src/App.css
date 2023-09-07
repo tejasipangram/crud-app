@@ -79,3 +79,13 @@
   align-items: center;
   justify-content: center;
 }
+
+.dark-modal {
+  background-color: black;
+  color: white;
+}
+
+.light-modal {
+  background-color: white;
+  color: black;
+}

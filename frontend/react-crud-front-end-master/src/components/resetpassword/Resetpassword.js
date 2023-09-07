@@ -3,20 +3,25 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { toast } from "react-toastify";
 import { auth } from "../../firebase";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { GlobalContext } from "../../GloblaCotext";
 
 function Resetpassword() {
+  const { loading, setLoading } = useContext(GlobalContext);
   const [email, setEmail] = useState("");
 
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
     sendPasswordResetEmail(auth, email)
       .then(() => {
         // Password reset email sent!
         // ..
         toast.success("Email verifcation link sent");
+        setLoading(false);
       })
       .catch((error) => {
+        setLoading(false);
         const errorCode = error.code;
         const errorMessage = error.message;
         toast.error(errorMessage);
@@ -41,7 +46,7 @@ function Resetpassword() {
           </Form.Text>
         </Form.Group>
 
-        <Button variant="primary" type="submit">
+        <Button disabled={loading} variant="primary" type="submit">
           Reset
         </Button>
       </Form>

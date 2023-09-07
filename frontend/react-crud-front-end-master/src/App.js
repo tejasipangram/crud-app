@@ -7,7 +7,7 @@ import NavbarComp from "./components/Navabar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Form } from "react-router-dom";
 import Home from "./Home";
 import Login from "./components/login/Login";
 import Register from "./components/register/Register";
@@ -19,7 +19,7 @@ import Resetpassword from "./components/resetpassword/Resetpassword";
 
 function App() {
   const [user, load] = useAuthState(auth);
-
+  const [darkMode, setDarkMode] = useState(false);
   const [userId, setUserId] = useState(null);
   const [pageSize, setPageSize] = useState(10);
   const [loading, setLoading] = useState(false);
@@ -178,9 +178,10 @@ function App() {
           setUserId,
           user,
           load,
+          darkMode,
         }}
       >
-        <NavbarComp user={user} />
+        <NavbarComp user={user} setDarkMode={setDarkMode} />
         <Loader loading={loading} setLoading={setLoading} />
         <ToastContainer
           position="top-center"

@@ -5,12 +5,16 @@ import { GlobalContext } from "./GloblaCotext";
 import PaginationOutlined from "./components/MuiPagination";
 
 const Home = () => {
-  const { pageSize, currentData, setPageSize, getAllData, user } =
+  const { pageSize, currentData, darkMode, setPageSize, getAllData, user } =
     useContext(GlobalContext);
   console.log(currentData);
 
   return (
-    <div className="d-flex flex-wrap gap-4 justify-content-center flex-column align-items-center">
+    <div
+      className={`min-vh-100 d-flex flex-wrap gap-4 justify-content-start flex-column align-items-center ${
+        darkMode ? "bg-dark text-light " : "bg-light text-dark"
+      }`}
+    >
       <CreateList />
       <div className="d-flex flex-wrap gap-4 justify-content-center">
         {currentData.length > 0 ? (
