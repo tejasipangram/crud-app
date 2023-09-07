@@ -51,31 +51,30 @@ function CreateList({ name, title = "", body = "" }) {
 
       <Modal
         className={`${darkMode ? "bg-dark text-light" : "bg-light text-dark"}`}
+        data-bs-theme={darkMode ? "dark" : "light"}
         show={show}
         onHide={handleClose}
-        dialogClassName="dark-modal"
       >
         <Modal.Header
           data-bs-theme={darkMode ? "dark" : "light"}
-          className={darkMode ? "dark-modal" : "light-modal"}
+          className={darkMode ? "bg-dark" : "bg-light"}
           closeButton
         >
-          <Modal.Title className={darkMode ? "dark-modal" : "light-modal"}>
+          <Modal.Title className={darkMode ? "text-light" : "text-dark"}>
             Create List
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body className={darkMode ? "dark-modal" : "light-modal"}>
-          <Form className={darkMode ? "dark-modal" : "light-modal"}>
+        <Modal.Body
+          data-bs-theme={darkMode ? "dark" : "light"}
+          className={darkMode ? "bg-dark" : "bg-light"}
+        >
+          <Form>
             <Form.Group
               className={`mb-3 `}
               controlId="exampleForm.ControlInput1"
             >
               <Form.Label>List Title</Form.Label>
               <Form.Control
-                style={{
-                  backgroundColor: darkMode ? "black" : "white",
-                  color: darkMode ? "white" : "black",
-                }}
                 required={true}
                 onChange={onChangeTitleHandler}
                 type="text"
@@ -88,10 +87,6 @@ function CreateList({ name, title = "", body = "" }) {
             >
               <Form.Label>Description</Form.Label>
               <Form.Control
-                style={{
-                  backgroundColor: darkMode ? "black" : "white",
-                  color: darkMode ? "white" : "black",
-                }}
                 required={true}
                 onChange={onChangeBodyeHandler}
                 as="textarea"
@@ -108,10 +103,6 @@ function CreateList({ name, title = "", body = "" }) {
             <Form.Group controlId="formFile" className="mb-3">
               <Form.Label>Select a file</Form.Label>
               <Form.Control
-                style={{
-                  backgroundColor: darkMode ? "black" : "white",
-                  color: darkMode ? "white" : "black",
-                }}
                 onChange={(e) => {
                   onFileHandler(e);
                 }}

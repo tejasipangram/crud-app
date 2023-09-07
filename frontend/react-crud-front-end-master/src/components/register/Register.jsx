@@ -60,6 +60,7 @@ const Register = () => {
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Name</Form.Label>
             <Form.Control
+              data-bs-theme={darkMode ? "dark" : "light"}
               value={name}
               onChange={(e) => {
                 setName(e.target.value);
@@ -71,6 +72,7 @@ const Register = () => {
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
+              data-bs-theme={darkMode ? "dark" : "light"}
               type="email"
               value={email}
               onChange={(e) => {
@@ -86,6 +88,7 @@ const Register = () => {
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control
+              data-bs-theme={darkMode ? "dark" : "light"}
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);

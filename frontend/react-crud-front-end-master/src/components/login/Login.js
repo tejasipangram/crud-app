@@ -87,6 +87,7 @@ function Login() {
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
+              data-bs-theme={darkMode ? "dark" : "light"}
               value={email}
               required={true}
               onChange={(e) => {
@@ -103,6 +104,7 @@ function Login() {
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control
+              data-bs-theme={darkMode ? "dark" : "light"}
               required={true}
               value={password}
               onChange={(e) => {
