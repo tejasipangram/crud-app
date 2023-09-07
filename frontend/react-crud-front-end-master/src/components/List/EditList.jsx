@@ -56,25 +56,44 @@ function EditList({ id, title, description, filePath }) {
         show={show}
         onHide={handleClose}
       >
-        <Modal.Header closeButton>
-          <Modal.Title>Edit List</Modal.Title>
+        <Modal.Header
+          dialogClassName="dark-modal"
+          className={darkMode ? "dark-modal" : "light-modal"}
+          closeButton
+        >
+          <Modal.Title dialogClassName="dark-modal">Edit List</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body
+          className={darkMode ? "dark-modal" : "light-modal"}
+          dialogClassName="dark-modal"
+        >
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>List Title</Form.Label>
               <Form.Control
+                style={{
+                  backgroundColor: darkMode ? "black" : "white",
+                  color: darkMode ? "white" : "black",
+                }}
                 onChange={onChangeTitleHandler}
                 type="text"
                 value={modalTitle}
               />
             </Form.Group>
             <Form.Group
+              style={{
+                backgroundColor: darkMode ? "black" : "white",
+                color: darkMode ? "white" : "black",
+              }}
               className="mb-3"
               controlId="exampleForm.ControlTextarea1"
             >
               <Form.Label>Description</Form.Label>
               <Form.Control
+                style={{
+                  backgroundColor: darkMode ? "black" : "white",
+                  color: darkMode ? "white" : "black",
+                }}
                 onChange={onChangeBodyeHandler}
                 as="textarea"
                 rows={3}
@@ -93,9 +112,20 @@ function EditList({ id, title, description, filePath }) {
                 style={{ maxWidth: "100%" }}
               />
             )}
-            <Form.Group controlId="formFile" className="mb-3">
+            <Form.Group
+              style={{
+                backgroundColor: darkMode ? "black" : "white",
+                color: darkMode ? "white" : "black",
+              }}
+              controlId="formFile"
+              className="mb-3"
+            >
               <Form.Label>Select a file</Form.Label>
               <Form.Control
+                style={{
+                  backgroundColor: darkMode ? "black" : "white",
+                  color: darkMode ? "white" : "black",
+                }}
                 onChange={(e) => {
                   onFileHandler(e);
                 }}
@@ -105,7 +135,13 @@ function EditList({ id, title, description, filePath }) {
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer
+          style={{
+            backgroundColor: darkMode ? "black" : "white",
+            color: darkMode ? "white" : "black",
+          }}
+          className={darkMode ? "dark-modal" : "light-modal"}
+        >
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>

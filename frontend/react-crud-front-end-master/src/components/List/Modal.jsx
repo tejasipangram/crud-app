@@ -56,6 +56,7 @@ function CreateList({ name, title = "", body = "" }) {
         dialogClassName="dark-modal"
       >
         <Modal.Header
+          data-bs-theme={darkMode ? "dark" : "light"}
           className={darkMode ? "dark-modal" : "light-modal"}
           closeButton
         >
@@ -65,9 +66,16 @@ function CreateList({ name, title = "", body = "" }) {
         </Modal.Header>
         <Modal.Body className={darkMode ? "dark-modal" : "light-modal"}>
           <Form className={darkMode ? "dark-modal" : "light-modal"}>
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+            <Form.Group
+              className={`mb-3 `}
+              controlId="exampleForm.ControlInput1"
+            >
               <Form.Label>List Title</Form.Label>
               <Form.Control
+                style={{
+                  backgroundColor: darkMode ? "black" : "white",
+                  color: darkMode ? "white" : "black",
+                }}
                 required={true}
                 onChange={onChangeTitleHandler}
                 type="text"
@@ -80,6 +88,10 @@ function CreateList({ name, title = "", body = "" }) {
             >
               <Form.Label>Description</Form.Label>
               <Form.Control
+                style={{
+                  backgroundColor: darkMode ? "black" : "white",
+                  color: darkMode ? "white" : "black",
+                }}
                 required={true}
                 onChange={onChangeBodyeHandler}
                 as="textarea"
@@ -96,6 +108,10 @@ function CreateList({ name, title = "", body = "" }) {
             <Form.Group controlId="formFile" className="mb-3">
               <Form.Label>Select a file</Form.Label>
               <Form.Control
+                style={{
+                  backgroundColor: darkMode ? "black" : "white",
+                  color: darkMode ? "white" : "black",
+                }}
                 onChange={(e) => {
                   onFileHandler(e);
                 }}
