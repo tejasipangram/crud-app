@@ -12,12 +12,14 @@ dotenv.config({ path: "./config/.env" });
 app.use(cors({ origin: process.env.ORIGIN }));
 app.use(bodyParser.json());
 import ListRoutes from "./routes/operation.js";
+import UserRoutes from "./routes/user.js";
 import bodyParser from "body-parser";
 import { createUploadDirectory } from "./utility/createDir.js";
 
 app.use("/static", express.static(path.join(__dirname, "upload")));
 
 app.use("/", ListRoutes);
+app.use("/", UserRoutes);
 
 // Global error handling middleware
 app.use((err, req, res, next) => {

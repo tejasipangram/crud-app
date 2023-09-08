@@ -37,6 +37,9 @@ function NavbarComp({ user, setDarkMode }) {
               <span>Home</span>
             </Link>
 
+            <Link className="text-decoration-none mx-2" to={"/users"}>
+              <span>Joined</span>
+            </Link>
             <Link className="text-decoration-none mx-2" to={"/login"}>
               <span>Login</span>
             </Link>

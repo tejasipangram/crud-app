@@ -4,6 +4,7 @@ const ListSchema = new mongoose.Schema({
   description: String,
   filePath: String,
   UserId: String,
+  email: String,
 });
 
 export const List = mongoose.model("List", ListSchema);

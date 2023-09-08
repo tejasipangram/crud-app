@@ -32,6 +32,7 @@ function Login() {
     signInWithPopup(auth, provider)
       .then((data) => {
         console.log(data);
+
         toast.success("Logged in successfully");
         setLoading(false);
       })
@@ -83,7 +84,10 @@ function Login() {
       }`}
     >
       <div className="container d-flex flex-column   justify-content-center align-items-center">
-        <Form className="" style={{ maxWidth: "25rem" }}>
+        <Form
+          className={darkMode ? "text-light" : "text-dark"}
+          style={{ maxWidth: "25rem" }}
+        >
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
@@ -96,7 +100,7 @@ function Login() {
               type="email"
               placeholder="Enter email"
             />
-            <Form.Text className={` ${darkMode ? "text-light" : "text-dark"}`}>
+            <Form.Text className={darkMode ? "text-light" : "text-dark"}>
               We'll never share your email with anyone else.
             </Form.Text>
           </Form.Group>

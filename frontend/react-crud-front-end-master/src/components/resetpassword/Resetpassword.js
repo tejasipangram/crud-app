@@ -7,7 +7,7 @@ import { useContext, useState } from "react";
 import { GlobalContext } from "../../GloblaCotext";
 
 function Resetpassword() {
-  const { loading, setLoading } = useContext(GlobalContext);
+  const { loading, setLoading, darkMode } = useContext(GlobalContext);
   const [email, setEmail] = useState("");
 
   const handleSubmit = (e) => {
@@ -29,27 +29,41 @@ function Resetpassword() {
       });
   };
   return (
-    <div className="container d-flex justify-content-center">
-      <Form onSubmit={handleSubmit} style={{ maxWidth: "25rem" }}>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-            value={email}
-            type="email"
-            placeholder="Enter email"
-          />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
-        </Form.Group>
+    <div
+      className={`w-100 min-vh-100 ${
+        darkMode ? "bg-dark color-light " : "bg-light color-dark"
+      }`}
+    >
+      <div
+        className={`${
+          darkMode ? "bg-dark color-light " : "bg-light color-dark"
+        } container d-flex justify-content-center`}
+      >
+        <Form
+          className={darkMode ? "text-light" : "text-dark"}
+          onSubmit={handleSubmit}
+          style={{ maxWidth: "25rem" }}
+        >
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              value={email}
+              type="email"
+              placeholder="Enter email"
+            />
+            <Form.Text className={darkMode ? "text-light" : "text-dark"}>
+              We'll never share your email with anyone else.
+            </Form.Text>
+          </Form.Group>
 
-        <Button disabled={loading} variant="primary" type="submit">
-          Reset
-        </Button>
-      </Form>
+          <Button disabled={loading} variant="primary" type="submit">
+            Reset
+          </Button>
+        </Form>
+      </div>
     </div>
   );
 }

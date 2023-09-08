@@ -1,7 +1,7 @@
 import "./App.css";
 import { GlobalContext } from "./GloblaCotext";
 import { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { useAuthState } from "react-firebase-hooks/auth";
 import NavbarComp from "./components/Navabar";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -16,6 +16,7 @@ import Loader from "./Loader";
 import { auth } from "./firebase";
 import { signInWithCustomToken } from "firebase/auth";
 import Resetpassword from "./components/resetpassword/Resetpassword";
+import UsersList from "./components/users/UserList";
 
 function App() {
   const [user, load] = useAuthState(auth);
@@ -35,11 +36,13 @@ function App() {
 
   const createList = (title, description, file) => {
     //creating a form data
+
     setLoading(true);
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
     formData.append("image", file);
+    formData.append("email", user.email);
 
     fetch(`${process.env.REACT_APP_SERVER}/create/${user.uid}`, {
       method: "POST",
@@ -56,6 +59,7 @@ function App() {
               return [json.data, ...prev];
             });
           }
+          toast.success("List created");
         } else {
           alert(json.message);
         }
@@ -65,6 +69,7 @@ function App() {
       .catch((err) => {
         setLoading(false);
         getAllData();
+        toast.error("An error occured");
       });
   };
   //getting the data from json api
@@ -115,7 +120,7 @@ function App() {
       });
 
       const data = await res.json();
-
+      toast.success("List updated");
       const newData = currentData.map((list, index) => {
         if (data.data._id === list._id) {
           list.title = title;
@@ -129,6 +134,7 @@ function App() {
       setLoading(false);
       setKey(Math.random());
     } catch (error) {
+      toast.error("An error occured");
       setLoading(false);
     }
   };
@@ -185,7 +191,7 @@ function App() {
         <Loader loading={loading} setLoading={setLoading} />
         <ToastContainer
           position="top-center"
-          autoClose={5000}
+          autoClose={3000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
@@ -204,6 +210,7 @@ function App() {
             path="/auth/resetpassword"
             element={user ? <Home /> : <Resetpassword />}
           />
+          <Route path="/users" element={<UsersList />} />
         </Routes>
       </GlobalContext.Provider>
     </BrowserRouter>

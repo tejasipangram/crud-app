@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { GithubAuthProvider, GoogleAuthProvider, getAuth } from "firebase/auth";
 
 import "firebase/auth";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 

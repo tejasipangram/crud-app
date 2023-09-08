@@ -2,7 +2,7 @@ import { List } from "../model/List.js";
 import { sendEmail } from "../utility/sendMail.js";
 
 export const create = async (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, email } = req.body;
   console.log(req.file, "this is req.file");
   try {
     if (!title || !description || !req.file) {
@@ -33,7 +33,7 @@ export const create = async (req, res) => {
 
     const filePath = req.fileName;
     const UserId = req.params.userId;
-    const data = new List({ title, description, filePath, UserId });
+    const data = new List({ title, description, filePath, UserId, email });
     await data.save();
 
     res.status(201).json({ success: true, message: "List added", data });
